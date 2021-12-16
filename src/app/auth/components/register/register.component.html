@@ -11,16 +11,16 @@
         <form [formGroup]='form' (ngSubmit)='onSubmit()'>
           <fieldset>
             <fieldset class='form-group'>
-              <input type='text' class='form-control form-control-lg' placeholder='Username' formControlName='userName'/>
+              <input type='text' class='form-control form-control-lg' placeholder='Username' [formControlName]="'userName'"/>
             </fieldset>
             <fieldset class='form-group'>
-              <input type='text' class='form-control form-control-lg' placeholder='Email' formControlName='email'/>
+              <input type='text' class='form-control form-control-lg' placeholder='Email' [formControlName]="'email'"/>
             </fieldset>
             <fieldset class='form-group'>
-              <input type='password' class='form-control form-control-lg' placeholder='Password' formControlName='password'/>
+              <input type='password' class='form-control form-control-lg' placeholder='Password' [formControlName]="'password'"/>
             </fieldset>
           </fieldset>
-          <button class='btn btn-lg btn-primary pull-xs-right' type='submit'>Sign up</button>
+          <button class='btn btn-lg btn-primary pull-xs-right' type='submit' [disabled]="isSubmitting$ | async">Sign up</button>
         </form>
       </div>
     </div>
