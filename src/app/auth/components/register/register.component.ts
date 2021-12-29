@@ -6,9 +6,12 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { registerAction } from '../../store/actions/register.actions';
-import { isSubmittingSelector } from '../../store/selectors';
-import { AuthService } from '../../services/auth.service';
-import { ICurrentUser } from '../../../shared/types/currentUser.interface';
+import {
+  isSubmittingSelector,
+  validationErrorsSelector,
+} from '../../store/selectors';
+import { IRegisterRequest } from '../../types/registerRequest.interface';
+import { IBackendErrors } from '../../../shared/types/backendErrors.interface';
 
 @Component({
   selector: 'app-register',
@@ -18,21 +21,23 @@ import { ICurrentUser } from '../../../shared/types/currentUser.interface';
 export class RegisterComponent implements OnInit {
   public form!: FormGroup;
   public isSubmitting$!: Observable<boolean>;
+  public backendErrors$: Observable<IBackendErrors | null>;
 
-  constructor(
-    private fb: FormBuilder,
-    private store: Store,
-    private authService: AuthService
-  ) {}
+  constructor(private fb: FormBuilder, private store: Store) {}
 
   public ngOnInit(): void {
     this.initializeForm();
     this.initializeValues();
   }
 
+  private initializeValues(): void {
+    this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector));
+    this.backendErrors$ = this.store.pipe(select(validationErrorsSelector));
+  }
+
   public initializeForm(): void {
     this.form = this.fb.group({
-      userName: ['', [Validators.required]],
+      username: ['', [Validators.required]],
       email: '',
       password: '',
     });
@@ -40,15 +45,9 @@ export class RegisterComponent implements OnInit {
 
   public onSubmit(): void {
     console.log(this.form.value);
-    this.store.dispatch(registerAction(this.form.value));
-    this.authService
-      .register(this.form.value)
-      .subscribe((currentUser: ICurrentUser) => {
-        console.log(currentUser);
-      });
-  }
-
-  private initializeValues(): void {
-    this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector));
+    const request: IRegisterRequest = {
+      user: this.form.value,
+    };
+    this.store.dispatch(registerAction({ request }));
   }
 }
