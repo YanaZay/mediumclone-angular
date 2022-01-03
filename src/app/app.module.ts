@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { AuthModule } from './auth/auth.module';
 import { EffectsModule } from '@ngrx/effects';
+import { TopBarModule } from './shared/modules/top-bar/top-bar.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,7 @@ import { EffectsModule } from '@ngrx/effects';
       logOnly: environment.production,
       autoPause: true,
     }),
+    TopBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
