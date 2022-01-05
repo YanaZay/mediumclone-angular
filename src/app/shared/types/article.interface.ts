@@ -1,5 +1,7 @@
+import { IProfile } from './profile.interface';
+
 export interface IArticle {
-  author: [];
+  author: IProfile;
   body: string;
   createdAt: string;
   description: string;

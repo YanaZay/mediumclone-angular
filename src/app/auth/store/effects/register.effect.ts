@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import {
   registerAction,
@@ -11,7 +11,6 @@ import {
 } from '../actions/register.actions';
 import { AuthService } from '../../services/auth.service';
 import { ICurrentUser } from '../../../shared/types/currentUser.interface';
-import { HttpErrorResponse } from '@angular/common/http';
 import { PersistenceService } from '../../../shared/services/persistence.service';
 
 @Injectable()
