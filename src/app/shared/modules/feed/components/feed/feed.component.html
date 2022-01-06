@@ -19,8 +19,8 @@
     <a [routerLink]="['/articles', article.slug]" class="preview-link">
       <h1>{{ article.title }}</h1>
       <p>{{ article.description }}</p>
-      list of tags
+      <app-tag-list [tags]="article.tagList"></app-tag-list>
     </a>
   </div>
-<!--  <app-pagination [total]="(feed$ | async).articlesCount" [limit]="limit" [url]="baseUrl" [currentPage]="currentPage"></app-pagination>>-->
+  <app-pagination [total]="(feed$ | async).articlesCount" [limit]="limit" [url]="baseUrl" [currentPage]="currentPage"></app-pagination>
 </div>
