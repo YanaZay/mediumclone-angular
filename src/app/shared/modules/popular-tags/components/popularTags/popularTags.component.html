@@ -1,1 +1,13 @@
-<p>popular-tags works!</p>
+<app-loading *ngIf="this.isLoading$ | async"></app-loading>
+<app-error-messages *ngIf="this.error$ | async"></app-error-messages>
+
+<div class="sidebar" *ngIf="popularTags$ | async">
+  <p>Popular Tags</p>
+  <div class="tag-list">
+    <a *ngFor="let popularTag of popularTags$ | async"
+       [routerLink]="['/tags', popularTag]"
+       class="tag-default tag-pill">
+      {{popularTag}}
+    </a>
+  </div>
+</div>
