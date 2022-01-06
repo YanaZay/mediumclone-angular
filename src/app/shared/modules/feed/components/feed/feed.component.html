@@ -1,5 +1,5 @@
-<div *ngIf="isLoading$ | async">Loading...</div>
-<div *ngIf="error$ | async">some error happened...</div>
+<app-loading *ngIf="isLoading$ | async"></app-loading>
+<app-error-messages *ngIf="error$ | async"></app-error-messages>
 
 <div *ngIf="feed$ | async">
 
@@ -21,6 +21,6 @@
       <p>{{ article.description }}</p>
       list of tags
     </a>
-
   </div>
+<!--  <app-pagination [total]="(feed$ | async).articlesCount" [limit]="limit" [url]="baseUrl" [currentPage]="currentPage"></app-pagination>>-->
 </div>
