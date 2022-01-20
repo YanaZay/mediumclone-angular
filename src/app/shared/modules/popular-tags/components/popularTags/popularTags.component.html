@@ -1,5 +1,5 @@
-<app-loading *ngIf="this.isLoading$ | async"></app-loading>
-<app-error-messages *ngIf="this.error$ | async"></app-error-messages>
+<app-loading *ngIf="isLoading$ | async"></app-loading>
+<app-error-messages *ngIf="error$ | async"></app-error-messages>
 
 <div class="sidebar" *ngIf="popularTags$ | async">
   <p>Popular Tags</p>

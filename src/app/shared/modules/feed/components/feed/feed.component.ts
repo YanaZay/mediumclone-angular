@@ -53,6 +53,15 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.queryParamsSubscription.unsubscribe();
   }
 
+  private initializeListeners(): void {
+    this.queryParamsSubscription = this.route.queryParams.subscribe(
+      (params: Params) => {
+        this.currentPage = Number(params?.['page'] || '1');
+        this.fetchFeed();
+      }
+    );
+  }
+
   public fetchFeed(): void {
     const offset = this.currentPage * this.limit - this.limit;
     const parsedUrl = parseUrl(this.apiUrlProps);
@@ -64,14 +73,5 @@ export class FeedComponent implements OnInit, OnDestroy {
     const apiUrlWithParams = `${parsedUrl.url}?${stringifyParams}`;
 
     this.store.dispatch(getFeedAction({ url: apiUrlWithParams }));
-  }
-
-  private initializeListeners(): void {
-    this.queryParamsSubscription = this.route.queryParams.subscribe(
-      (params: Params) => {
-        this.currentPage = Number(params?.['page'] || '1');
-        this.fetchFeed();
-      }
-    );
   }
 }
