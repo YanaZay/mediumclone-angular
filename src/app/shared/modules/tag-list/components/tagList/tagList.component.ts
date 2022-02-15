@@ -6,9 +6,6 @@ import { PopularTagType } from '../../../../types/popularTag,type';
   selector: 'app-tag-list',
   templateUrl: './tagList.component.html',
 })
-export class TagListComponent implements OnInit {
+export class TagListComponent {
   @Input('tags') tagsProps: PopularTagType[];
-  constructor() {}
-
-  ngOnInit(): void {}
 }
