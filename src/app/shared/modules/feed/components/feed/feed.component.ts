@@ -1,10 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-
 import { select, Store } from '@ngrx/store';
-
 import { Observable, Subscription } from 'rxjs';
-
 import { parseUrl, stringify } from 'query-string';
 
 import { getFeedAction } from '../../store/actions/getFeed.action';
@@ -22,7 +19,6 @@ import { environment } from '../../../../../../environments/environment';
   styleUrls: ['./feed.component.scss'],
 })
 export class FeedComponent implements OnInit, OnDestroy {
-  @Input('apiUrl') apiUrlProps: string;
   public isLoading$: Observable<boolean>;
   public error$: Observable<string | null>;
   public feed$: Observable<IGetFeedResponse | null>;
@@ -30,6 +26,8 @@ export class FeedComponent implements OnInit, OnDestroy {
   public baseUrl: string;
   public currentPage: number;
   private queryParamsSubscription: Subscription;
+
+  @Input('apiUrl') apiUrlProps: string;
 
   constructor(
     private store: Store,

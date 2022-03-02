@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-
 import { catchError, map, of, switchMap } from 'rxjs';
 
 import { PopularTagsService } from '../../services/popularTags.service';
