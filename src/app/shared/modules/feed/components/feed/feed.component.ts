@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
@@ -18,7 +25,7 @@ import { environment } from '../../../../../../environments/environment';
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.scss'],
 })
-export class FeedComponent implements OnInit, OnDestroy {
+export class FeedComponent implements OnInit, OnDestroy, OnChanges {
   public isLoading$: Observable<boolean>;
   public error$: Observable<string | null>;
   public feed$: Observable<IGetFeedResponse | null>;
@@ -51,15 +58,6 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.queryParamsSubscription.unsubscribe();
   }
 
-  private initializeListeners(): void {
-    this.queryParamsSubscription = this.route.queryParams.subscribe(
-      (params: Params) => {
-        this.currentPage = Number(params?.['page'] || '1');
-        this.fetchFeed();
-      }
-    );
-  }
-
   public fetchFeed(): void {
     const offset = this.currentPage * this.limit - this.limit;
     const parsedUrl = parseUrl(this.apiUrlProps);
@@ -71,5 +69,23 @@ export class FeedComponent implements OnInit, OnDestroy {
     const apiUrlWithParams = `${parsedUrl.url}?${stringifyParams}`;
 
     this.store.dispatch(getFeedAction({ url: apiUrlWithParams }));
+  }
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    const isApiUrlChanged =
+      !changes['apiUrlProps'].firstChange &&
+      changes['apiUrlProps'].currentValue !==
+        changes['apiUrlProps'].previousValue;
+
+    isApiUrlChanged ? this.fetchFeed() : null;
+  }
+
+  private initializeListeners(): void {
+    this.queryParamsSubscription = this.route.queryParams.subscribe(
+      (params: Params) => {
+        this.currentPage = Number(params?.['page'] || '1');
+        this.fetchFeed();
+      }
+    );
   }
 }

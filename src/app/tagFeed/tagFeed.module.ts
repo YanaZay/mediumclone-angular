@@ -8,7 +8,7 @@ import { BannerModule } from '../shared/modules/banner/banner.module';
 import { PopularTagsModule } from '../shared/modules/popular-tags/popularTags.module';
 import { FeedTogglerModule } from '../shared/modules/feed-toggler/feed-toggler.module';
 
-const routes: Routes = [{ path: '', component: TagFeedComponent }];
+const routes: Routes = [{ path: 'tags/:slug', component: TagFeedComponent }];
 
 @NgModule({
   declarations: [TagFeedComponent],
