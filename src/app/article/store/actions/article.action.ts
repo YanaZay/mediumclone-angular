@@ -15,3 +15,15 @@ export const getArticleSuccessAction = createAction(
 export const getArticleFailureAction = createAction(
   '[Article] Get article failure'
 );
+export const deleteArticleAction = createAction(
+  '[Article] Delete article',
+  props<{ slug: string }>()
+);
+
+export const deleteArticleSuccessAction = createAction(
+  '[Article] Delete article success'
+);
+
+export const deleteArticleFailureAction = createAction(
+  '[Article] Delete article failure'
+);

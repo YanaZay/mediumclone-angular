@@ -3,7 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
 
-import { getArticleAction } from '../../store/actions/getFeed.action';
+import {
+  deleteArticleAction,
+  getArticleAction,
+} from '../../store/actions/article.action';
 import { IArticle } from '../../../shared/types/article.interface';
 import {
   articleSelector,
@@ -32,6 +35,10 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.initializeValues();
     this.initializeListeners();
     this.fetchData();
+  }
+
+  public deleteArticle(): void {
+    this.store.dispatch(deleteArticleAction({ slug: this.slug }));
   }
 
   public ngOnDestroy(): void {
