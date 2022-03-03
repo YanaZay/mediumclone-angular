@@ -1,90 +1,70 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { parseUrl, stringify } from 'query-string';
+import { combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
 
-import { IGetFeedResponse } from '../../types/getFeedResponse.interface';
+import { getArticleAction } from '../../store/actions/getFeed.action';
+import { IArticle } from '../../../shared/types/article.interface';
 import {
+  articleSelector,
   errorSelector,
-  feedSelector,
   isLoadingSelector,
 } from '../../store/selectors';
-import { environment } from '../../../../environments/environment';
+import { currentUserSelector } from '../../../auth/store/selectors';
+import { ICurrentUser } from '../../../shared/types/currentUser.interface';
 
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
   styleUrls: ['./article.component.scss'],
 })
-export class ArticleComponent implements OnInit, OnDestroy, OnChanges {
+export class ArticleComponent implements OnInit, OnDestroy {
+  public slug: string;
+  public article: IArticle | null;
   public isLoading$: Observable<boolean>;
   public error$: Observable<string | null>;
-  public feed$: Observable<IGetFeedResponse | null>;
-  public limit = environment.limit;
-  public baseUrl: string;
-  public currentPage: number;
-  private queryParamsSubscription: Subscription;
+  public isAuthor$: Observable<boolean>;
+  private destroy$: Subject<void> = new Subject<void>();
 
-  @Input('apiUrl') apiUrlProps: string;
-
-  constructor(
-    private store: Store,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private store: Store, private route: ActivatedRoute) {}
 
   public ngOnInit(): void {
     this.initializeValues();
     this.initializeListeners();
-  }
-
-  private initializeValues(): void {
-    this.isLoading$ = this.store.pipe(select(isLoadingSelector));
-    this.error$ = this.store.pipe(select(errorSelector));
-    // this.article$ = this.store.pipe(select(feedSelector));
-    this.baseUrl = this.router.url.split('?')[0];
+    this.fetchData();
   }
 
   public ngOnDestroy(): void {
-    this.queryParamsSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  public fetchFeed(): void {
-    const offset = this.currentPage * this.limit - this.limit;
-    const parsedUrl = parseUrl(this.apiUrlProps);
-    const stringifyParams = stringify({
-      limit: this.limit,
-      offset,
-      ...parsedUrl.query,
-    });
-    const apiUrlWithParams = `${parsedUrl.url}?${stringifyParams}`;
-
-    // this.store.dispatch(getFeedAction({ url: apiUrlWithParams }));
-  }
-
-  public ngOnChanges(changes: SimpleChanges): void {
-    const isApiUrlChanged =
-      !changes['apiUrlProps'].firstChange &&
-      changes['apiUrlProps'].currentValue !==
-        changes['apiUrlProps'].previousValue;
-
-    isApiUrlChanged ? this.fetchFeed() : null;
-  }
-
-  private initializeListeners(): void {
-    this.queryParamsSubscription = this.route.queryParams.subscribe(
-      (params: Params) => {
-        this.currentPage = Number(params?.['page'] || '1');
-        this.fetchFeed();
-      }
+  private initializeValues(): void {
+    this.slug = this.route.snapshot.paramMap.get('slug');
+    this.isLoading$ = this.store.pipe(select(isLoadingSelector));
+    this.error$ = this.store.pipe(select(errorSelector));
+    this.isAuthor$ = combineLatest(
+      this.store.pipe(select(articleSelector)),
+      this.store.pipe(select(currentUserSelector))
+    ).pipe(
+      map(([article, currentUser]: [IArticle | null, ICurrentUser | null]) => {
+        if (!article || !currentUser) {
+          return false;
+        }
+        return currentUser.username === article.author.username;
+      })
     );
+  }
+
+  private initializeListeners() {
+    this.store
+      .pipe(takeUntil(this.destroy$), select(articleSelector))
+      .subscribe((article: IArticle | null) => {
+        this.article = article;
+      });
+  }
+
+  private fetchData(): void {
+    this.store.dispatch(getArticleAction({ slug: this.slug }));
   }
 }

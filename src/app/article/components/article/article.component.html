@@ -1,26 +1,37 @@
-<app-loading *ngIf="isLoading$ | async"></app-loading>
-<app-error-messages *ngIf="error$ | async"></app-error-messages>
-
-<div *ngIf="feed$ | async">
-
-  <div class="article-preview" *ngFor="let article of (feed$ | async).articles">
-    <div class="article-meta">
-      <a [routerLink]="['/profiles', article.author.username]">
-        <img [src]="article.author.image" alt="">
-      </a>
-      <div class="info">
+<div class='article-page'>
+  <div class='banner'>
+    <div class='container' *ngIf='article'>
+      <h1>{{article.title}}</h1>
+      <div class='article-meta'>
         <a [routerLink]="['/profiles', article.author.username]">
-          {{ article.author.username }}
+          <img [src]='article.author.image' alt='#'>
         </a>
-        <span class="date">{{ article.createdAt }}</span>
+        <div class='info'>
+          <a [routerLink]="['/profiles', article.author.username]">
+            {{article.author.username}}
+          </a>
+          <span class='date'>{{article.createdAt}}</span>
+        </div>
+        <span *ngIf='isAuthor$ | async'>
+          <a [routerLink]="['articles', article.slug, 'edit']" class='btn btn-outline-secondary btn-sn'>
+            <i class='ion-edit'></i> Edit article
+          </a>
+          DELETE BUTTON
+        </span>
       </div>
-      <div class="pull-xs-right">Add to favorites</div>
     </div>
-    <a [routerLink]="['/articles', article.slug]" class="preview-link">
-      <h1>{{ article.title }}</h1>
-      <p>{{ article.description }}</p>
-      <app-tag-list [tags]="article.tagList"></app-tag-list>
-    </a>
   </div>
-  <app-pagination [total]="(feed$ | async).articlesCount" [limit]="limit" [url]="baseUrl" [currentPage]="currentPage"></app-pagination>
+  <div class='container page'>
+    <app-loading *ngIf='isLoading$ | async'></app-loading>
+    <app-error-messages *ngIf='error$ | async'></app-error-messages>
+
+    <div class='row article-content' *ngIf='article'>
+      <div class='col-xs-12'>
+        <div>
+          <p>{{article.body}}</p>
+        </div>
+        <app-tag-list [tags]='article.tagList'></app-tag-list>
+      </div>
+    </div>
+  </div>
 </div>
