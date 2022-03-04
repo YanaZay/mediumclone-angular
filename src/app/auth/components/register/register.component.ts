@@ -11,7 +11,7 @@ import {
   validationErrorsSelector,
 } from '../../store/selectors';
 import { IRegisterRequest } from '../../types/registerRequest.interface';
-import { IBackendErrors } from '../../../shared/types/backendErrors.interface';
+import { IBackendErrors } from '../../../shared/types/backend-errors.interface';
 
 @Component({
   selector: 'app-register',

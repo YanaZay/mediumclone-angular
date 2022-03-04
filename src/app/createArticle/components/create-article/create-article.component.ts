@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-create-article',
+  selector: 'app-create-form',
   templateUrl: './create-article.component.html',
   styleUrls: ['./create-article.component.scss'],
 })

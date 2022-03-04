@@ -8,7 +8,7 @@ import {
   getPopularTagsFailureAction,
   getPopularTagsSuccessAction,
 } from '../actions/getPopularTags.action';
-import { PopularTagType } from '../../../../types/popularTag,type';
+import { PopularTagType } from '../../../../types/popular-tag,type';
 
 @Injectable()
 export class GetPopularTagsEffect {

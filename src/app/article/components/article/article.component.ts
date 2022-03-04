@@ -14,7 +14,7 @@ import {
   isLoadingSelector,
 } from '../../store/selectors';
 import { currentUserSelector } from '../../../auth/store/selectors';
-import { ICurrentUser } from '../../../shared/types/currentUser.interface';
+import { ICurrentUser } from '../../../shared/types/current-user.interface';
 
 @Component({
   selector: 'app-article',

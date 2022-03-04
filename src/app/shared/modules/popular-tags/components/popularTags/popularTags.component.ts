@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { getPopularTagsAction } from '../../store/actions/getPopularTags.action';
 import { Observable } from 'rxjs';
-import { PopularTagType } from '../../../../types/popularTag,type';
+import { PopularTagType } from '../../../../types/popular-tag,type';
 import {
   errorSelector,
   isLoadingSelector,

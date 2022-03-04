@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { IGetArticleResponse } from '../types/getArticleResponse.interface';
+import { IGetArticleResponse } from '../types/get-article-response.interface';
 import { IArticle } from '../types/article.interface';
 
 @Injectable({

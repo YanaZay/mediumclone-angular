@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
 import { environment } from '../../../../../environments/environment';
-import { PopularTagType } from '../../../types/popularTag,type';
+import { PopularTagType } from '../../../types/popular-tag,type';
 import { IGetPopularTagsResponse } from '../types/getPopularTagsResponse.interface';
 
 @Injectable({

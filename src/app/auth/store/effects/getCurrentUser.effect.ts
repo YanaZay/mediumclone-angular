@@ -6,7 +6,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 
 import { AuthService } from '../../services/auth.service';
-import { ICurrentUser } from '../../../shared/types/currentUser.interface';
+import { ICurrentUser } from '../../../shared/types/current-user.interface';
 import { PersistenceService } from '../../../shared/services/persistence.service';
 import {
   getCurrentUserAction,

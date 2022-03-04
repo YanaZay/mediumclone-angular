@@ -9,7 +9,7 @@ import {
   isSubmittingSelector,
   validationErrorsSelector,
 } from '../../store/selectors';
-import { IBackendErrors } from '../../../shared/types/backendErrors.interface';
+import { IBackendErrors } from '../../../shared/types/backend-errors.interface';
 import { ILoginRequest } from '../../types/loginRequest.interface';
 import { loginAction } from '../../store/actions/login.action';
 
