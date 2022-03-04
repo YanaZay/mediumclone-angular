@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IBackendErrors } from '../../../../types/backend-errors.interface';
 
 @Component({
-  selector: 'mc-backend-error-messages',
+  selector: 'app-backend-error-messages',
   templateUrl: './backendErrorMessages.component.html',
   styleUrls: ['./backendErrorMessages.component.scss'],
 })
